@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <!-- Sales User Group -->
+    <record id="group_sb_sales_user" model="res.groups">
+        <field name="name">SB Sales User</field>
+        <field name="category_id" ref="base.module_category_hidden"/>
+    </record>
+
+    <!-- Sales Officer Group -->
+    <record id="group_sb_sales_officer" model="res.groups">
+        <field name="name">SB Sales Officer</field>
+        <field name="category_id" ref="base.module_category_hidden"/>
+
+    <!-- Officer inherits Sales User -->
+        <field name="implied_ids"
+           eval="[(4, ref('SB_sale_automation.group_sb_sales_user'))]"/>
+    </record>
+
+    <!-- Record Rule for SB Sales User -->
+    <record id="rule_sb_sales_user_auto_confirm" model="ir.rule">
+
+        <field name="name">
+            SB Sales User - Auto Confirm Orders Only
+        </field>
+
+        <field name="model_id" ref="sale.model_sale_order"/>
+
+        <field name="domain_force">
+            [('auto_confirm', '=', True)]
+        </field>
+
+        <field name="groups"
+               eval="[(4, ref('SB_sale_automation.group_sb_sales_user'))]"/>
+
+    </record>
+
+</odoo>

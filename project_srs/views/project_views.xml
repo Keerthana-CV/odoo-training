@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="view_project_form_inherit_srs" model="ir.ui.view">
+        <field name="name">project.project.form.inherit.srs</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.edit_project"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//notebook" position="inside">
+                <page string="SRS" name="srs_page">
+                    <group>
+                        <field name="srs_reference_project_id"/>
+                    </group>
+                    <field name="srs_line_ids">
+                        <list editable="bottom">
+                            <field name="srs_master_id"/>
+                            <field name="description"/>
+                        </list>
+                    </field>
+                </page>
+            </xpath>
+
+            <xpath expr="//sheet" position="before">
+                <header>
+                    <button name="action_print_srs"
+                            type="object"
+                            string="Print SRS"
+                            class="btn-primary"/>
+                </header>
+            </xpath>
+
+        </field>
+    </record>
+
+</odoo>

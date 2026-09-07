@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <template id="report_saleorder_document_auto_confirm"
+              inherit_id="sale.report_saleorder_document">
+
+        <xpath expr="//div[@id='informations']" position="inside">
+
+            <div class="col" name="information_auto_confirm">
+                <strong>Auto Confirm</strong>
+                <div>
+                    <t t-if="doc.auto_confirm">Yes</t>
+                    <t t-else="">No</t>
+                </div>
+            </div>
+
+        </xpath>
+
+    </template>
+
+</odoo>

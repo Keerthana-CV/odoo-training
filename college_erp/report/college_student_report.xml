@@ -1,0 +1,343 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+
+    <!-- ================================= -->
+    <!-- PAPER FORMAT -->
+    <!-- ================================= -->
+
+    <record id="paperformat_college_student" model="report.paperformat">
+        <field name="name">College Student A4</field>
+        <field name="default" eval="False"/>
+        <field name="format">A4</field>
+        <field name="page_width">0</field>
+        <field name="page_height">0</field>
+        <field name="orientation">Portrait</field>
+
+        <field name="margin_top">5</field>
+        <field name="margin_bottom">0</field>
+        <field name="margin_left">10</field>
+        <field name="margin_right">10</field>
+
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">0</field>
+
+        <field name="dpi">90</field>
+    </record>
+
+    <!-- ================================= -->
+    <!-- REPORT ACTION -->
+    <!-- ================================= -->
+
+    <record id="action_college_student_report" model="ir.actions.report">
+        <field name="name">College Student Report</field>
+        <field name="model">college.student</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">college_erp.college_student_report_template</field>
+        <field name="report_file">college_erp.college_student_report_template</field>
+        <field name="binding_model_id" ref="model_college_student"/>
+        <field name="binding_type">report</field>
+    
+
+    <!-- Use our custom paper format -->
+        <field name="paperformat_id" ref="paperformat_college_student"/>
+    </record>
+    
+
+
+    <template id="college_student_report_template">
+
+        <t t-call="web.html_container">
+
+            <t t-foreach="docs" t-as="student">
+
+                <t t-set="company" t-value="env.company"/>
+
+                <!-- Reduced top spacing -->
+                <div class="page" style="margin-top: 0; padding-top: 0;">
+
+                    <!-- ================================= -->
+                    <!-- HEADER -->
+                    <!-- ================================= -->
+
+                    <table style="width: 100%; margin-bottom: 15px;">
+                        <tr>
+
+                            <!-- Logo - Left -->
+                            <td style="width: 50%; vertical-align: top; text-align: left;">
+
+                                <img t-if="company.logo"
+                                     t-att-src="image_data_uri(company.logo)"
+                                     style="max-height: 100px; max-width: 180px;"/>
+                            </td>
+
+
+                            <!-- Company Details - Right -->
+                            <td style="width: 50%; vertical-align: top; text-align: right;">
+
+                                <strong t-field="company.name"/>
+                                <br/>
+
+                                <span t-field="company.street"/>
+                                <br/>
+
+                                <span t-if="company.street2"
+                                      t-field="company.street2"/>
+                                <br t-if="company.street2"/>
+
+                                <span t-field="company.city"/>
+
+                                <span t-if="company.state_id">
+                                    , <span t-field="company.state_id"/>
+                                </span>
+
+                                <span t-if="company.zip">
+                                    - <span t-field="company.zip"/>
+                                </span>
+
+                                <br/>
+
+                                <span t-field="company.country_id"/>
+
+                            </td>
+
+                        </tr>
+                    </table>
+
+
+                    <!-- ================================= -->
+                    <!-- REPORT HEADING -->
+                    <!-- ================================= -->
+
+                    <div style="text-align: center; margin-bottom: 25px;">
+
+                        <h2 style="color: red;">College Student Details</h2>
+
+                    </div>
+
+
+                    <!-- ================================= -->
+                    <!-- STUDENT INFORMATION -->
+                    <!-- ================================= -->
+
+                    <h3 style="margin-top: 0;">
+                        Student Information
+                    </h3>
+
+                    <table style="width: 100%; border-collapse: collapse; border: 1px solid black; background-color: #f2f2f2;"> 
+
+                        <!-- First Name -->
+                        <tr>
+                            <td style="width: 35%; padding: 6px; border: 1px solid black;">
+                                <strong>First Name:</strong>
+                            </td>
+
+                            <td style="width: 65%; padding: 6px; border: 1px solid black;">
+                                <span t-field="student.first_name"/>
+                            </td>
+                        </tr>
+
+
+                        <!-- Last Name -->
+                        <tr>
+                            <td style="padding: 6px; border: 1px solid black;">
+                                <strong>Last Name:</strong>
+                            </td>
+
+                            <td style="padding: 6px; border: 1px solid black;">
+                                <span t-field="student.last_name"/>
+                            </td>
+                        </tr>
+
+
+                        <!-- Father's Name -->
+                        <tr>
+                            <td style="padding: 6px; border: 1px solid black;">
+                                <strong>Father's Name:</strong>
+                            </td>
+
+                            <td style="padding: 6px; border: 1px solid black;">
+                                <span t-field="student.father_name"/>
+                            </td>
+                        </tr>
+
+
+                        <!-- Mother's Name -->
+                        <tr>
+                            <td style="padding: 6px; border: 1px solid black;">
+                                <strong>Mother's Name:</strong>
+                            </td>
+
+                            <td style="padding: 6px; border: 1px solid black;">
+                                <span t-field="student.mother_name"/>
+                            </td>
+                        </tr>
+
+                    </table>
+
+
+                    <!-- ================================= -->
+                    <!-- ADMISSION INFORMATION -->
+                    <!-- ================================= -->
+
+                    <h3 style="margin-top: 20px;">
+                        Admission Information
+                    </h3>
+
+                    <table style="width: 100%; border-collapse: collapse; border: 1px solid black;">
+
+                        <!-- Admission Number -->
+                        <tr>
+                            <td style="width: 35%; padding: 6px; border: 1px solid black;">
+                                <strong>Admission Number:</strong>
+                            </td>
+
+                            <td style="width: 65%; padding: 6px; border: 1px solid black;">
+                                <span t-field="student.admission_number"/>
+                            </td>
+                        </tr>
+
+
+                        <!-- Admission Date -->
+                        <tr>
+                            <td style="padding: 6px; border: 1px solid black;">
+                                <strong>Admission Date:</strong>
+                            </td>
+
+                            <td style="padding: 6px; border: 1px solid black;">
+                                <span t-field="student.admission_date"/>
+                            </td>
+                        </tr>
+
+
+                        <!-- Phone -->
+                        <tr>
+                            <td style="padding: 6px; border: 1px solid black;">
+                                <strong>Phone:</strong>
+                            </td>
+
+                            <td style="padding: 6px; border: 1px solid black;">
+                                <span t-field="student.phone"/>
+                            </td>
+                        </tr>
+
+
+                        <!-- Email -->
+                        <tr>
+                            <td style="padding: 6px; border: 1px solid black;">
+                                <strong>Email:</strong>
+                            </td>
+
+                            <td style="padding: 6px; border: 1px solid black;">
+                                <span t-field="student.email"/>
+                            </td>
+                        </tr>
+
+                    </table>
+
+
+                    <!-- ================================= -->
+                    <!-- COMMUNICATION ADDRESS -->
+                    <!-- ================================= -->
+
+                    <h3 style="margin-top: 20px;">
+                        Communication Address
+                    </h3>
+
+                    <table style="width: 100%; border-collapse: collapse; border: 1px solid black;">
+
+                        <!-- Communication Address -->
+                        <tr>
+                            <td style="width: 35%; padding: 6px; border: 1px solid black;">
+                                <strong>Communication Address:</strong>
+                            </td>
+
+                            <td style="width: 65%; padding: 6px; border: 1px solid black;">
+                                <span t-field="student.communication_address"/>
+                            </td>
+                        </tr>
+
+
+                        <!-- Street -->
+                        <tr>
+                            <td style="padding: 6px; border: 1px solid black;">
+                                <strong>Street:</strong>
+                            </td>
+
+                            <td style="padding: 6px; border: 1px solid black;">
+                                <span t-field="student.street"/>
+                            </td>
+                        </tr>
+
+
+                        <!-- Street 2 -->
+                        <tr>
+                            <td style="padding: 6px; border: 1px solid black;">
+                                <strong>Street 2:</strong>
+                            </td>
+
+                            <td style="padding: 6px; border: 1px solid black;">
+                                <span t-field="student.street2"/>
+                            </td>
+                        </tr>
+
+
+                        <!-- ZIP -->
+                        <tr>
+                            <td style="padding: 6px; border: 1px solid black;">
+                                <strong>ZIP:</strong>
+                            </td>
+
+                            <td style="padding: 6px; border: 1px solid black;">
+                                <span t-field="student.zip"/>
+                            </td>
+                        </tr>
+
+
+                        <!-- City -->
+                        <tr>
+                            <td style="padding: 6px; border: 1px solid black;">
+                                <strong>City:</strong>
+                            </td>
+
+                            <td style="padding: 6px; border: 1px solid black;">
+                                <span t-field="student.city"/>
+                            </td>
+                        </tr>
+
+
+                        <!-- Country -->
+                        <tr>
+                            <td style="padding: 6px; border: 1px solid black;">
+                                <strong>Country:</strong>
+                            </td>
+
+                            <td style="padding: 6px; border: 1px solid black;">
+                                <span t-field="student.country_id"/>
+                            </td>
+                        </tr>
+
+
+                        <!-- Fed. State -->
+                        <tr>
+                            <td style="padding: 6px; border: 1px solid black;">
+                                <strong>Fed. State:</strong>
+                            </td>
+
+                            <td style="padding: 6px; border: 1px solid black;">
+                                <span t-field="student.state_id"/>
+                            </td>
+                        </tr>
+
+                    </table>
+
+                </div>
+
+            </t>
+
+        </t>
+
+    </template>
+
+</odoo>
+
