@@ -1,0 +1,7 @@
+<odoo>
+    <menuitem id="menu_sale_report_wizard_custom"
+              name="Sales Report"
+              action="action_sale_report_wizard"
+              parent="sale.menu_sale_report"
+              sequence="5"/>
+</odoo>
