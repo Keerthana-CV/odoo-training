@@ -1,0 +1,83 @@
+<odoo>
+    <record id="view_sales_return_form" model="ir.ui.view">
+        <field name="name">sale.order.return.form</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="is_sales_return" invisible="1"/>
+                <div class="alert alert-info d-flex align-items-center gap-3 mb-3"
+                     role="alert"
+                     invisible="not is_sales_return">
+                    <field name="origin_sale_order_id"
+                           class="fw-bold text-primary fs-5"
+                           required="is_sales_return"
+                           readonly="state != 'draft'"
+                           nolabel="1"
+                           placeholder="Select the original Sale Order..."/>
+                    <button name="action_copy_sale_order_lines"
+                            type="object"
+                            string="Copy"
+                            icon="fa-copy"
+                            class="btn-primary"
+                            invisible="not origin_sale_order_id"/>
+                </div>
+            </xpath>
+
+            <xpath expr="//div[hasclass('oe_title')]" position="inside">
+                <widget name="web_ribbon"
+                        text="Returned"
+                        bg_color="text-bg-info"
+                        invisible="return_picking_count == 0 and credit_note_count == 0"/>
+                <widget name="web_ribbon"
+                        text="Cancelled"
+                        bg_color="text-bg-danger"
+                        invisible="state != 'cancel'"/>
+            </xpath>
+
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_view_return_pickings"
+                        type="object"
+                        class="oe_stat_button"
+                        icon="fa-truck"
+                        invisible="return_picking_count == 0">
+                    <field name="return_picking_count" widget="statinfo" string="Return Delivery"/>
+                </button>
+                <button name="action_view_credit_notes"
+                        type="object"
+                        class="oe_stat_button"
+                        icon="fa-money"
+                        invisible="credit_note_count == 0">
+                    <field name="credit_note_count" widget="statinfo" string="Credit Notes"/>
+                </button>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_sales_return_tree" model="ir.ui.view">
+        <field name="name">sale.order.return.list</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_quotation_tree_with_onboarding"/>
+        <field name="arch" type="xml">
+            <xpath expr="//list" position="attributes">
+                <attribute name="decoration-success">is_sales_return and state == 'sale'</attribute>
+                <attribute name="decoration-danger">is_sales_return and state == 'cancel'</attribute>
+                <attribute name="decoration-warning">is_sales_return and state in ('draft', 'sent')</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="action_sales_return" model="ir.actions.act_window">
+        <field name="name">Sales Return</field>
+        <field name="res_model">sale.order</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('is_sales_return', '=', True)]</field>
+        <field name="context">{'default_is_sales_return': True}</field>
+    </record>
+
+    <menuitem id="menu_sales_return"
+              name="Sales Return"
+              parent="sale.sale_menu_root"
+              action="action_sales_return"
+              sequence="15"/>
+</odoo>
