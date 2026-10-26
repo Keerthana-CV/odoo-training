@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_delivery_approval_level_manager,delivery.approval.level.manager,model_delivery_approval_level,stock.group_stock_manager,1,1,1,1
+access_delivery_approval_level_user,delivery.approval.level.user,model_delivery_approval_level,stock.group_stock_user,1,0,0,0
+access_delivery_approval_line_manager,delivery.approval.line.manager,model_delivery_approval_line,stock.group_stock_manager,1,1,1,1
+access_delivery_approval_line_user,delivery.approval.line.user,model_delivery_approval_line,stock.group_stock_user,1,0,0,0
+access_delivery_approval_reject_wizard_user,delivery.approval.reject.wizard.user,model_delivery_approval_reject_wizard,stock.group_stock_user,1,1,1,1

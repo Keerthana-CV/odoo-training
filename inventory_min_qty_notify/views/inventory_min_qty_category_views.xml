@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- List view -->
+    <record id="view_inventory_min_qty_category_list" model="ir.ui.view">
+        <field name="name">inventory.min.qty.category.list</field>
+        <field name="model">inventory.min.qty.category</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="category_ids" widget="many2many_tags"/>
+                <field name="min_qty"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Form view -->
+    <record id="view_inventory_min_qty_category_form" model="ir.ui.view">
+        <field name="name">inventory.min.qty.category.form</field>
+        <field name="model">inventory.min.qty.category</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger" invisible="active"/>
+                    <field name="active" invisible="1"/>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="min_qty"/>
+                        </group>
+                        <group>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Product Categories">
+                            <field name="category_ids" widget="many2many_tags"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_inventory_min_qty_category" model="ir.actions.act_window">
+        <field name="name">Minimum Quantity (Category Wise)</field>
+        <field name="res_model">inventory.min.qty.category</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- Menu: same parent as the product-wise menu -->
+    <menuitem id="menu_inventory_min_qty_category"
+              name="Minimum Quantity (Category Wise)"
+              parent="stock.menu_stock_config_settings"
+              action="action_inventory_min_qty_category"
+              sequence="51"/>
+
+</odoo>

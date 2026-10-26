@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_picking_form_inherit_approval" model="ir.ui.view">
+        <field name="name">stock.picking.form.inherit.approval</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+
+            <!-- Hide BOTH Validate buttons until approvals are completed -->
+            <xpath expr="//header/button[@name='button_validate'][1]"
+                   position="attributes">
+                <attribute name="invisible"
+                           add="approval_state in ('pending', 'rejected')"
+                           separator=" or "/>
+            </xpath>
+            <xpath expr="//header/button[@name='button_validate'][2]"
+                   position="attributes">
+                <attribute name="invisible"
+                           add="approval_state in ('pending', 'rejected')"
+                           separator=" or "/>
+            </xpath>
+
+            <xpath expr="//header" position="inside">
+                <field name="can_approve" invisible="1"/>
+                <button name="action_approve_delivery" string="Approve"
+                        type="object" class="btn-primary"
+                        invisible="not can_approve"/>
+                <button name="action_open_reject_wizard" string="Reject"
+                        type="object" class="btn-danger"
+                        invisible="not can_approve"/>
+                <button name="action_reset_approval" string="Reset Approvals"
+                        type="object"
+                        groups="stock.group_stock_manager"
+                        invisible="approval_state != 'rejected' or state in ('done', 'cancel')"/>
+            </xpath>
+            <xpath expr="//page[@name='extra']" position="after">
+                <page string="Approvals" name="approvals"
+                      invisible="not approval_line_ids">
+                    <group>
+                        <field name="approval_state"/>
+                    </group>
+                    <field name="approval_line_ids" readonly="1">
+                        <list>
+                            <field name="sequence"/>
+                            <field name="level_id"/>
+                            <field name="approver_ids" widget="many2many_tags"/>
+                            <field name="state"/>
+                            <field name="action_user_id"/>
+                            <field name="action_date"/>
+                            <field name="remarks"/>
+                        </list>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

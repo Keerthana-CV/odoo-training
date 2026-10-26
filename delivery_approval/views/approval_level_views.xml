@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_delivery_approval_level_list" model="ir.ui.view">
+        <field name="name">delivery.approval.level.list</field>
+        <field name="model">delivery.approval.level</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="approver_ids" widget="many2many_tags"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_delivery_approval_level_form" model="ir.ui.view">
+        <field name="name">delivery.approval.level.form</field>
+        <field name="model">delivery.approval.level</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="sequence"/>
+                        </group>
+                        <group>
+                            <field name="approver_ids" widget="many2many_tags"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="active"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_delivery_approval_level" model="ir.actions.act_window">
+        <field name="name">Approval Levels</field>
+        <field name="res_model">delivery.approval.level</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="menu_delivery_approval_level"
+              name="Delivery Approval Levels"
+              parent="stock.menu_stock_config_settings"
+              action="action_delivery_approval_level"
+              sequence="90"/>
+</odoo>
